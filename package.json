@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "cloning youtube with VanillaJS and NodeJS",
   "main": "index.js",
-  "author": "Kwak Yu Shin",
+  "author": "Secret",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"

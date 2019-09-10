@@ -3,11 +3,8 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import { userRouter } from "./router";
 const app = express();
-
-const PORT = 4000;
-
-const handleListening = () => console.log(`Listening on: http://localhost:${PORT}`);
 
 const handleHome = (req, res) => res.send("Hello from ass");
 
@@ -24,4 +21,6 @@ app.get("/", handleHome);
 
 app.get("/profile" , handleProfile);
 
-app.listen(PORT , handleListening);
+app.use("/user", userRouter); //use의 의미는 누군가 /user경로에 접속하면 이 router전체를 사용하겠다는 의미
+
+export default app; //누군가 import할때  app object를 주겠단 의미

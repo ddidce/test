@@ -1,7 +1,7 @@
 export const home = (req, res) => res.render("home", {pageTitle: "Home"}); //send대신 render사용시 views폴더에서 하일명이 home이고 확장자가pug인 템플릿파일을 찾음
 export const search = (req, res) => {
-    console.log(req);
-    res.render("search", {pageTitle: "Search"});
+    const {query : {term : searchingBy}} = req; //query : {term} = req.query.term
+    res.render("search", {pageTitle: "Search", searchingBy});
 
 }
 export const videos = (req, res) =>

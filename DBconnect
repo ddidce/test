@@ -1,0 +1,9 @@
+Mongo를 JavaScript와 연결하는방법은 두가지
+
+1. MongoDB
+2. JavaScript의 NodeJS
+    ㄴ Adpater를 통해서 연결해야함
+    ㄴ JS코드를 작성하고싶으면 MongoDB로부터 Instruction을 받아야함 -> 이 역활을 Mongoes가해줌
+    ㄴ npm install mongoose 치면됌 알아서 해줌
+
+MongoDB는 Database고 mongoose는 Database와 연결하게 도와주는 것이다.

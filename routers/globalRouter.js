@@ -18,3 +18,4 @@ globalRouter.get(routes.logout, logout);
 
 export default globalRouter;
 
+//라우터는 컨트롤러 기능으로 url을 매핑하는 역활을함

@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
+import dotenv from "dotenv";
+//.env 파일 안에 있는 정보를 불러올수있음
+dotenv.config();
 
-mongoose.connect("mongodb://localhost:27017/youtube" , 
+mongoose.connect( 
 //monogose는 이런식으로 configuration을 보낼수 있음
+process.env.MONGO_URL,
 {
     useNewUrlParser:true, 
     useFindAndModify:false

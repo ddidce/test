@@ -7,8 +7,8 @@ export const home = async (req, res) => {
     res.render("home", { pageTitle: "Home", videos });
   } catch(error) {
     console.log(error);
+    res.render("home", { pageTitle: "Home", videos: [] });
   } 
-  res.render("home", { pageTitle: "Home", videos: [] });
   }; //send대신 render사용시 views폴더에서 하일명이 home이고 확장자가pug인 템플릿파일을 찾음
 
 export const search = (req, res) => {
@@ -23,6 +23,7 @@ export const search = (req, res) => {
 
 export const getUpload = (req, res) =>
  res.render("upload", {pageTitle: "Upload"});
+ 
 export const postUpload = async(req, res) => {
   const {
     body: {

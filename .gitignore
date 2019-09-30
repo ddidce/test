@@ -84,7 +84,8 @@ typings/
 
 # FuseBox cache
 .fusebox/
-uploads
 package-lock.json
+uploads
+
 # DynamoDB Local files
 .dynamodb/

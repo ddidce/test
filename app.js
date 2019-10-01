@@ -8,6 +8,7 @@ import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
+
 const app = express();
 
 app.use(helmet()); //helmet은 application을 더 안전하도록 도와줌

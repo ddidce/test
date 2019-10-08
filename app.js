@@ -4,10 +4,10 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passport from "passport";
+import mongoose from "mongoose";
 import session from "express-session";
-import {
-    localsMiddelware
-} from "./middlewares";
+import MongoStore from "connect-mongo";
+import {localsMiddelware} from "./middlewares";
 import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -16,6 +16,8 @@ import globalRouter from "./routers/globalRouter";
 import "./passport";
 
 const app = express();
+
+const CokieStore = MongoStore(session);
 
 app.use(helmet()); //helmet은 application을 더 안전하도록 도와줌
 app.set('view engine', "pug"); //view engine은 처음에 default라서 pug엔진으로 바꿔줌
@@ -29,9 +31,11 @@ app.use(
     session({
       secret: process.env.COOKIE_SECRET,
       resave: true,
-      saveUninitialized: false
+      saveUninitialized: false,
+      store: new CokieStore({mongooseConnection: mongoose.connection})
     })
   );
+
   app.use(passport.initialize());
   app.use(passport.session());
   

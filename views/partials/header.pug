@@ -8,7 +8,7 @@ header.header
                 input(type="text", placeholder="Search by trem...", name='term')
         .header__column
             ul
-                if !user
+                if !loggedUser
                     li
                         a(href=routes.join) 회원가입
                     li
@@ -17,7 +17,7 @@ header.header
                     li 
                         a(href=`/videos${routes.upload}`) 업로드
                     li 
-                        a(href=routes.userDetail(user.id)) 프로필
+                        a(href=routes.me) 프로필
                     li 
                         a(href=routes.logout) 로그아웃
                 

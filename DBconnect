@@ -31,3 +31,98 @@ scss는
 사용자 인증을위해 passport라는 미들웨어 사용할것임
 serialization = 어떤 정보를 쿠키에게 주느냐를 의미/ 어떤 필드가 쿠키에 포함될 것인지 알려주는 역활
 deserialization = 그 쿠키의 정보를 어떻게 사용자로 전환하는가를 의미 /
+
+사용자 인증 정리
+
+username과 passwrod를 이용한 방식은 간단하다
+username과 passwrod를 post 방식으로 전달 하고,
+우리가 설치한 플러그인인 mongoose가 자동으로 체크를해준다
+만약 password가 맞으면, passport에게 맞다고 알리고 그럼
+passport는 쿠키를 생성한다. 
+
+깃헙 인증
+
+사용자는 깃허브 웹사이트로 이동하게 된다
+그럼 거기에서 권한 승인을 한다
+=> github website (auth)
+
+그 후 깃허브 웹사이트는 우리에게 그 사용자의 정보를 보내주는데
+/auth/github/callback이라는 URL로 오게 된다.
+=> github website (auth) -> /auth/github/callback
+
+그렇게 되면, passport가 함수를 호출하는데 
+githubLoginCallback이라는 함수를 실행한다 <= 우리가 만들어준함수
+passport에서 설정할때 넣어줬음
+이 함수는 모든 정보를 받는다
+이정보로 필요한 걸 할 수 있다
+=>githubLoginCallback(profile, id, email) 등등
+
+이 githubLoginCallback함수의 한 가지 조건이있는데 
+callback (cb) 함수를 return 해야 한다는 것이다
+그리고 cb 함수를 실행 시켜야함. 그리고 그 함수에게 error가
+있는지, user는 있는지를 알려줘야함
+
+=>githubLoginCallback(profile, id, email)
+    => cb(error?, user?)
+
+만약 error가 존재하면 passport는 "에러가 있구나, user는 없군"
+하고 끝내버릴 것이다.
+    => cb(error)
+
+만약 user가 존재하면 
+    => cb(null, user)
+
+passport는 user를 취해서, 쿠키를 만들고,
+    => cookie = makeCookie(user)
+
+쿠키를 저장한다
+    => saveCookie = saveCookie(cookie)
+
+이 저장된 쿠키를 브라우저로 보내게 된다.
+    => sendCookie(saveCookie)
+
+
+github website (auth)
+github website (auth) -> /auth/github/callback
+githubLoginCallback(profile, id, email)
+    cb(null, user)
+
+    cookie = makeCookie(user)
+    saveCookie = saveCookie(cookie)
+    sendCookie(saveCookie)
+
+
+globalRouter에서 보면
+=> globalRouter.get(routes.gitHub, githubLogin);
+gitHub로 갈때, githubLogin이 실행되는데 우리를 깃헙 웹사이트로
+보내주는 역활을 한다.
+
+
+
+globalRouter.get(
+    routes.githubCallback, 
+    passport.authenticate('github', { failureRedirect: "/login"}),
+    postGithubLogIn
+);
+그리고 githubCallback로 돌아왔을때 passport는 내가 알려준 함수인
+githubLoginCallback을 실행시킨다
+
+만약 user를 찾으면, passport는 좋다하고 통과시키면서,
+postGithubLogIn 이 실행될 것이고 (home으로 리다이렉트)
+쿠키를 만들어서 저장해줄 것이다
+
+만약 user를 찾지못하면
+=>  { failureRedirect: "/login"} 이 코드인 
+로그인화면으로 redirect시킨다
+
+즉, cb함수를 호출할 때 user없이 error가 들어가면,
+passport는 error가 있음을 알고/ login 화면으로 보내버리는 것이다
+
+error가 없다고하고 user를 넣어서 cb함수를 호출하면 passport는
+ cookie = makeCookie(user)
+    saveCookie = saveCookie(cookie)
+    sendCookie(saveCookie)
+여기 나열된 일들을 처리하고 postGithubLogin을 실행시켜서 home화면으로
+redirect하게끔 만든다.
+
+그렇게되면 로그인에 성공하게 된다

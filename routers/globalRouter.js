@@ -9,7 +9,10 @@ import {
     postJoin, 
     postLogin, 
     githubLogin, 
-    postGithubLogIn 
+    postGithubLogIn,
+    getMe,
+    facebookLogin,
+    postFacebookLogin
 } from "../controllers/userController";
 import {onlyPublic, onlyPrivate} from "../middlewares";
 
@@ -33,6 +36,14 @@ globalRouter.get(
     postGithubLogIn
 );
 
+globalRouter.get(routes.me, getMe);
+
+globalRouter.get(routes.facebook, facebookLogin);
+globalRouter.get(
+    routes.facebookCallback, 
+    passport.authenticate('facebook', {failureRedirect: '/login'}),
+    postFacebookLogin
+);
 export default globalRouter;
 
 //라우터는 컨트롤러 기능으로 url을 매핑하는 역활을함

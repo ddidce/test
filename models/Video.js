@@ -21,11 +21,15 @@ const VideoSchema = new mongoose.Schema({
         //현재 날짜 반환
         default: Date.now
     },
-    comments: [ {
+    comments: [{
         //objectid에게 ref로 어느 모델에서 온건지 알려줘야함
         type: mongoose.Schema.Types.ObjectId,
-        ref:"Comment"
-    }]
+        ref: "Comment"
+    }],
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 });
 
 //model 이름은 Video / Video model 의 schema는 VideoSchema

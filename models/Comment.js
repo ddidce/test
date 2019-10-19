@@ -9,6 +9,10 @@ const CommentSchema = new mongoose.Schema({
         type: Date,
         //현재 날짜 반환
         default: Date.now
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     }
 });
 

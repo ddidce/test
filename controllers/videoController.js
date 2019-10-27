@@ -1,5 +1,6 @@
 import routes from "../routes";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 
 export const home = async (req, res) => {
   try {
@@ -85,7 +86,7 @@ export const videoDetail = async (req, res) => {
   } = req;
   try {
     //populate => 객체를 가져오는 함수
-    const video = await Video.findById(id).populate("creator");
+    const video = await Video.findById(id).populate("creator").populate("comments");
     res.render("videoDetail", {
       pageTitle: video.title,
       video
@@ -182,5 +183,28 @@ export const postRegisterView = async(req, res) => { //이 url로 오면
     res.status(400); // 못찾을때를 의미
   } finally {
     res.end(); // 그냥 끝내기
+  }
+};
+
+// Add Comment
+
+export const postAddComment = async(req, res) => {
+  const {
+    params : { id }, //id는 url에서 가져오고
+    body : {comment }, //comment는 body에서 얻어온다.
+    user
+  } = req;
+  try {
+    const video = await Video.findById(id); //video를 찾고 
+    const newComment = await Comment.create({ //newComment를 생성하고
+      text: comment,
+      creator: user.id
+    });
+    video.comments.push(newComment.id); //comment아이디를 video comment에서 넣어준다
+    video.save();
+  }catch(error) {
+    res.status(400);
+  } finally {
+    res.ned();
   }
 };

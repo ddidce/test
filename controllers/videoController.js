@@ -166,3 +166,21 @@ export const deleteVideo = async (req, res) => {
   } catch (error) {}
   res.redirect(routes.home);
 };
+
+// Register Video View
+
+export const postRegisterView = async(req, res) => { //이 url로 오면 
+  const {
+    params : { id } //id를 얻고
+  } = req;
+  try{
+    const video = await Video.findById(id); //video를 찾고 찾으면
+    video.views += 1; //video count에 1개 증가를 시키고
+    video.save(); // 저장하고
+    res.satus(200) // ok를 의미
+  }catch(error) {
+    res.status(400); // 못찾을때를 의미
+  } finally {
+    res.end(); // 그냥 끝내기
+  }
+};

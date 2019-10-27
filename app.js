@@ -12,6 +12,8 @@ import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
+import apiRouter from "./routers/apiRouter";
+
 
 import "./passport";
 
@@ -47,5 +49,6 @@ app.use(localsMiddelware);
 app.use(routes.home, globalRouter); //이안에 홈, 서치, 조인, 로그인, 로그아웃URL이 담겨있음
 app.use(routes.users, userRouter); //use의 의미는 누군가 /user경로에 접속하면 이 router전체를 사용하겠다는 의미 , user URL이 담겨있음 주소는 routes에 정의
 app.use(routes.videos, videoRouter);
+app.use(routes.api, apiRouter);
 
 export default app; //누군가 import할때  app object를 주겠단 의미
